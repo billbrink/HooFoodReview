@@ -18,23 +18,11 @@
 <button class="tablink" onclick="location.href='dishes.html'" type="button">Dishes</button>
 
 <div id="Dining Halls" class="tabcontent">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Basic web app for interacting with Hoo Food Review">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>The Hoo Food Review</title>
-    </head> 
     <h3>Dining Halls</h3>
     <p>fill this in with dining hall tables</p>
 </div>
 
 <div id="Dishes" class="tabcontent">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Basic web app for interacting with Hoo Food Review">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>The Hoo Food Review</title>
-    </head> 
     <h3>Dishes</h3>
     <p>fill this in with dishes tables</p>
 </div>
