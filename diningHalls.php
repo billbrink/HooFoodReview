@@ -37,6 +37,8 @@
   </tr>
   </thead>
 
+  <hr/>
+
   <h2>Newcomb</h2>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
@@ -47,6 +49,7 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+  <hr/>
 
   <h3>Runk</h3>
 <!-- <div class="row justify-content-center">   -->
@@ -58,6 +61,7 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+<hr/>
 
 </body> 
 
