@@ -11,7 +11,7 @@ body, html {
   .tablink {
     background-color: #555;
     color: white;
-    float: left;
+    float: right;
     border: none;
     outline: none;
     cursor: pointer;
@@ -32,5 +32,5 @@ body, html {
     height: 100%;
   }
   
-  #DiningHalls {background-color: rgb(121, 156, 148);}
-  #Dishes {background-color: rgb(121, 156, 148);}
+  #DiningHalls {background-color: rgb(2, 19, 168);}
+  #Dishes {background-color: rgb(2, 19, 168);}
