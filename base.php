@@ -19,7 +19,7 @@
 <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
 <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-<button class="tablink" onclick="location.href='dishes.php'" type="button">Dishes</button>
+<button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
 
 <div id="Dining Halls" class="tabcontent">
     <h3>Dining Halls</h3>
