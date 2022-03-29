@@ -36,10 +36,10 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
-
+</table>
   <hr/>
 
-  <h2>Newcomb</h2>
+  <h1>Newcomb</h1>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
   <thead>
@@ -49,9 +49,10 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+</table>
   <hr/>
 
-  <h3>Runk</h3>
+  <h1>Runk</h1>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
   <thead>
@@ -61,6 +62,7 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+</table>
 <hr/>
 
 </body> 
