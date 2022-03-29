@@ -32,11 +32,11 @@
 ////////////////////////////////////////////
 
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on local XAMPP) **/
-$username = 'your-username';
-$password = 'your-password';
-$host = 'localhost:3306';
-$dbname = 'your-database';
-$dsn = "mysql:host=$host;dbname=$dbname";  
+$username = 'root';
+$password = '';
+$host = 'hoo-food-review:us-east4:hfr-db';
+$dbname = 'HooFoodReview';
+$dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFoodReview";
 ////////////////////////////////////////////
 
  
