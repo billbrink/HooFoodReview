@@ -1,3 +1,13 @@
+<?php
+require('connect-db.php');
+require('HooFoodReview_db.php');
+
+$OHill_Hours = getDHHours('O-Hill');
+$Newcomb_Hours = getDHHours('Newcomb');
+$Runk_Hours = getDHHours('Runk');
+?>
+
+
 <!DOCTYPE html>
 <html>
 <html lang="en">
@@ -36,6 +46,14 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+  <?php foreach($OHill_Hours as $Ohours): ?>
+    <tr>
+    <td><?php echo $Ohours['day_of_week']; ?></td>
+    <td><?php echo $Ohours['open_time']; ?></td>
+    <td><?php echo $Ohours['close_time']; ?></td>
+  </tr>
+  <?php endforeach; ?>
+
 </table>
   <hr/>
 
@@ -49,6 +67,13 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+  <?php foreach($Newcomb_Hours as $Nhours): ?>
+    <tr>
+    <td><?php echo $Nhours['day_of_week']; ?></td>
+    <td><?php echo $Nhours['open_time']; ?></td>
+    <td><?php echo $Nhours['close_time']; ?></td>
+  </tr>
+  <?php endforeach; ?>
 </table>
   <hr/>
 
@@ -62,6 +87,13 @@
     <th width="25%">Close Time</th> 
   </tr>
   </thead>
+  <?php foreach($Runk_Hours as $Rhours): ?>
+    <tr>
+    <td><?php echo $Rhours['day_of_week']; ?></td>
+    <td><?php echo $Rhours['open_time']; ?></td>
+    <td><?php echo $Rhours['close_time']; ?></td>
+  </tr>
+  <?php endforeach; ?>
 </table>
 <hr/>
 
