@@ -5,6 +5,10 @@ require('HooFoodReview_db.php');
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
 $Runk_Hours = getDHHours('Runk');
+
+$OHill_Location = getDHLocation('O-Hill');
+$Newcomb_Location = getDHLocation('Newcomb');
+$Runk_Location = getDHLocation('Runk');
 ?>
 
 
@@ -12,6 +16,12 @@ $Runk_Hours = getDHHours('Runk');
 <html>
 <html lang="en">
 <link href="tab_styles.css" rel="stylesheet" />
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
 
 <head>
     <meta charset="UTF-8">
@@ -25,18 +35,9 @@ $Runk_Hours = getDHHours('Runk');
 <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
 <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
 
-<div id="Dining Halls" class="tabcontent">
-    <h3>Dining Halls</h3>
-    <p>fill this in with dining hall tables</p>
-</div>
-
-<div id="Dishes" class="tabcontent">
-    <h3>Dishes</h3>
-    <p>fill this in with dishes tables</p>
-</div>
-
 <body>
 <h1>O-Hill</h1>
+<h3>(Location: <?php echo $OHill_Location['Location'] ?>)<h3>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
   <thead>
@@ -58,6 +59,7 @@ $Runk_Hours = getDHHours('Runk');
   <hr/>
 
   <h1>Newcomb</h1>
+  <h3>(Location: <?php echo $Newcomb_Location['Location'] ?>)<h3>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
   <thead>
@@ -78,6 +80,7 @@ $Runk_Hours = getDHHours('Runk');
   <hr/>
 
   <h1>Runk</h1>
+  <h3>(Location: <?php echo $Runk_Location['Location'] ?>)<h3>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
   <thead>

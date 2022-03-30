@@ -21,15 +21,6 @@
 <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
 <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
 
-<div id="Dining Halls" class="tabcontent">
-    <h3>Dining Halls</h3>
-    <p>fill this in with dining hall tables</p>
-</div>
-
-<div id="Dishes" class="tabcontent">
-    <h3>Dishes</h3>
-    <p>fill this in with dishes tables</p>
-</div>
 
 <body>
 </body> 
