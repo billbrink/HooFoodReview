@@ -9,6 +9,38 @@
   if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Ingredients")
   {
   }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
+  {
+    $Dishes = getDishesDHSort();
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dish")
+  {
+    $Dishes = getDishes();
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Ethnicity")
+  {
+    $Dishes = getDishesEthnicitySort();
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating High to Low")
+  {
+    $Dishes = getDishesRatingSort("DESC");
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating Low to High")
+  {
+    $Dishes = getDishesRatingSort("ASC");
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "O-Hill Options")
+  {
+    $Dishes = getDishesByDH("O-Hill");
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Newcomb Options")
+  {
+    $Dishes = getDishesByDH("Newcomb");
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Runk Options")
+  {
+    $Dishes = getDishesByDH("Runk");
+  }
 }
 ?>
 
@@ -39,6 +71,30 @@ table, th, td {
 <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
 
 <body>
+
+<div class="container">
+    <h1>Sort Options</h1>
+
+<form name="mainForm" action="dishes.php" method="post">
+
+<input type="submit" value="Sort by Dining Hall" name="btnAction" class="btn btn-dark"
+        title="Sort by Dining Hall" />
+<input type="submit" value="Sort by Dish" name="btnAction" class="btn btn-dark"
+        title="Sort by Dish" />
+<input type="submit" value="Sort by Ethnicity" name="btnAction" class="btn btn-dark"
+        title="Sort by Ethnicity" />
+<input type="submit" value="Rating High to Low" name="btnAction" class="btn btn-dark"
+        title="Sort by Rating High to Low" />
+<input type="submit" value="Rating Low to High" name="btnAction" class="btn btn-dark"
+        title="Sort by Rating Low to High" />
+<input type="submit" value="O-Hill Options" name="btnAction" class="btn btn-dark"
+        title="Find O-Hill Food Options" />
+<input type="submit" value="Newcomb Options" name="btnAction" class="btn btn-dark"
+        title="Find Newcomb Food Options" />
+<input type="submit" value="Runk Options" name="btnAction" class="btn btn-dark"
+        title="Find Runk Food Options" />
+</form>
+<hr/>
 
 <h1>Dishes</h1>
 <!-- <div class="row justify-content-center">   -->
