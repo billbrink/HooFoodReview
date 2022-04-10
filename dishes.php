@@ -125,7 +125,7 @@ table, th, td {
   <td>
         <form action="dishes.php" method="post">
            <!--- <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" /> --->
-           <button class="tablink" onClick="basicPopup('Ingredients.php')" type="button" value="<?php echo $Dish['Dish_Name']?>" name="ing">Ingredients</button>
+           <button class="tablink" onClick="basicPopup('ingredient_page.php')" type="button" value="<?php echo $Dish['Dish_Name']?>" name="ing">Ingredients</button>
   </td>
   </tr>
   <?php endforeach; ?>
