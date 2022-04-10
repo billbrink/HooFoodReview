@@ -138,4 +138,23 @@ function getDishesByDH($dh)
 
 }
 
+function getIngredients($dish)
+{
+    global $db;
+
+    $query = "select * from Contains Natural Join Ingredient where Dish_Name = :dish";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->execute();
+
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+
+    return $results;
+
+}
+
 ?>
