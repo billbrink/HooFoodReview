@@ -3,13 +3,16 @@
     require('HooFoodReview_db.php');
 
     $Dishes = getDishes();
-    $Ingredient_to_display = null;
+    $Ingredient_to_display = 'bacon';
+
+    session_start();
+    $_SESSION['Ingredient_to_display'] = $Ingredient_to_display;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Ingredients")
   {
-    
+    //$Ingredient_to_display = $_POST['ing'];
   }
   else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
   {
@@ -125,7 +128,9 @@ table, th, td {
   <td>
         <form action="dishes.php" method="post">
            <!--- <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" /> --->
-           <button class="tablink" onClick="basicPopup('ingredient_page.php')" type="button" value="<?php echo $Dish['Dish_Name']?>" name="ing">Ingredients</button>
+           <button class="tablink" onClick="basicPopup('ingredient_page.php')" type="button" value="Ingredients" name="btnAction">Ingredients</button>
+           <input type="hidden" name="ing" value="<?php echo $Dish['Dish_Name']?>"/>
+  </form>
   </td>
   </tr>
   <?php endforeach; ?>

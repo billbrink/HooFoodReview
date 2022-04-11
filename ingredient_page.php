@@ -1,5 +1,11 @@
 <?php 
     require('connect-db.php');
+    require('HooFoodReview_db.php');
+
+    session_start();
+    //global $Ingredient_to_display;
+    $Ingredient_to_display = $_GET['Ingredient_to_display'];
+    $Ingredients = getIngredients($Ingredient_to_display);
 ?>
 
 <!DOCTYPE html>
@@ -18,10 +24,39 @@
 
 <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
-<button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-<button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+
 
 
 <body>
+
+<h1>Dietary Information</h1>
+<!-- <div class="row justify-content-center">   -->
+<table class="w3-table w3-bordered w3-card-4" style="width:90%">
+  <thead>
+  <tr style="background-color:#B0B0B0">
+    <th width="10%">Dish</th>        
+    <th width="10%">Ingredients</th>        
+    <th width="10%">Nuts</th>
+    <th width="10%">Vegan</th>
+    <th width="10%">Gluten Free</th> 
+    <th width="10%">Shellfish</th>
+    <th width="10%">Dairy Free</th>
+    <th width="10%">Vegetarian</th>   
+  </tr>
+  </thead>
+  <?php foreach($Ingredients as $I): ?>
+    <tr>
+    <td><?php echo $I['Dish_Name']; ?></td>
+    <td><?php echo $I['Ingredient_Name']; ?></td>
+    <td><?php echo $I['Nuts']; ?></td>
+    <td><?php echo $I['Vegan']; ?></td>
+    <td><?php echo $I['Gluten_Free']; ?></td>
+    <td><?php echo $I['Shellfish']; ?></td>
+    <td><?php echo $I['Dairy_Free']; ?></td>
+    <td><?php echo $I['Vegetarian']; ?></td>
+  </tr>
+  <?php endforeach; ?>
+  </table>
+
 </body> 
 </html> 
