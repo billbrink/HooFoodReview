@@ -1,5 +1,7 @@
 <?php
 
+$dishIngredient = null;
+
 function getDHHours($dh)
 {
     global $db;
@@ -138,14 +140,14 @@ function getDishesByDH($dh)
 
 }
 
-function getIngredients($dish)
+function getIngredients()
 {
-    global $db;
+    global $db, $dishIngredient;
 
     $query = "select * from Contains Natural Join Ingredient where Dish_Name = :dish";
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":dish", $dishIngredient);
     $statement->execute();
 
     $results = $statement->fetchAll();
@@ -155,6 +157,13 @@ function getIngredients($dish)
 
     return $results;
 
+}
+
+function setDish($d)
+{
+    global $dishIngredient;
+    $dishIngredient = $d;
+    echo $dishIngredient;
 }
 
 

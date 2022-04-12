@@ -2,10 +2,11 @@
     require('connect-db.php');
     require('HooFoodReview_db.php');
 
-    session_start();
+    //$Ingredient_to_display = $_POST['ing'];
+    //session_start();
     //global $Ingredient_to_display;
-    $Ingredient_to_display = $_GET['Ingredient_to_display'];
-    $Ingredients = getIngredients($Ingredient_to_display);
+    //$Ingredient_to_display = $_SESSION['dish'];
+    $Ingredients = getIngredients();
 ?>
 
 <!DOCTYPE html>
