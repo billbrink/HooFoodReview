@@ -4,10 +4,7 @@
 
     $Dishes = getDishes();
     $Ingredient_to_display = 'bacon';
-    setDish($Ingredient_to_display);
-    //session_start();
-    //$_SESSION['dish'] = 'bacon';
-    //header('Location: ingredient_page.php');
+
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -49,10 +46,6 @@
   }
 }
 ?>
-
-<form method=GET action=ingredient_page.php>
-
-</form>
 
 
 <!DOCTYPE html>
@@ -144,7 +137,7 @@ table, th, td {
   <script>
 // JavaScript popup window function
 	function basicPopup(url) {
-popupWindow = window.open(url,'popUpWindow','height=300,width=700,left=50,top=50,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes')
+popupWindow = window.open(url,'popUpWindow','height=600,width=750,left=50,top=50,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes')
 	}
 
 </script>
