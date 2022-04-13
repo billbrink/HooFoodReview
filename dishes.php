@@ -3,8 +3,7 @@
     require('HooFoodReview_db.php');
 
     $Dishes = getDishes();
-    $Ingredient_to_display = 'bacon';
-
+    $Dish = "";
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -70,8 +69,8 @@ table, th, td {
 
 <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
-<button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-<button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<button class="tablink" onclick="location.href='diningHalls.php'" type="button">Dining Halls</button>
+<button class="tablink" onclick="location.href='dishes.php'" type="button">Dishes</button>
 
 <body>
 
@@ -126,21 +125,27 @@ table, th, td {
   <td>
         <form action="dishes.php" method="post">
            <!--- <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" /> --->
-           <button class="tablink" onClick="basicPopup('ingredient_page.php')" type="button" value="Ingredients" name="btnAction">Ingredients</button>
-           <input type="hidden" name="ing" value="<?php echo $Dish['Dish_Name']?>"/>
+           <button class="tablink" 
+           onclick="<?php
+              echo '<script type="text/JavaScript"';
+              echo 'alert("hi")';
+              echo '</script>';
+           ?>" type="button" value="Ingredients" name="btnAction">Ingredients</button>
   </form>
   </td>
   </tr>
   <?php endforeach; ?>
   </table>
 
-  <script>
+  <script type="text/JavaScript">
 // JavaScript popup window function
-	function basicPopup(url) {
-popupWindow = window.open(url,'popUpWindow','height=600,width=750,left=50,top=50,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes')
+	function basicPopup(dish) {
+    <?php
+      
+    ?>
 	}
-
-</script>
+  
+  </script>
 
 </body> 
 </html> 
