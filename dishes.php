@@ -5,16 +5,15 @@
     $Dishes = getDishes();
     $DN = null;
     $DH = null;
-?>
-<?php
+    $message = null;
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
       if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Ingredients")
       {
         $DN = $_POST['dn'];
         $DH = $_POST['dh'];
-        echo "<script>basicPopup();</script>";
-
+        $message = getIngredientsMessage($DN, $DH);
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
       {
@@ -70,28 +69,15 @@ table, th, td {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Hoo Food Review</title>
 
-    <script type="text/javascript">
-      // JavaScript popup window function
-	    function basicPopup() {
-        <?php
-          $Ingredients = getIngredients($DN, $DH);
-          $Nuts = 0;
-          $Vegan = 0;
-          $GlutenFree = 0;
-          $ShellFish = 0;
-          $Dairy = 0;
-          $Vegetarian = 0;
-          $message = "Ingredients \n";
-          foreach ($Ingredients as $i):
-            $message .= "\t";
-            $message .= $i['Ingredient_Name'];
-            $message .= "\n";
-          endforeach
-        ?>
-        alert(<?php echo json_encode($message); ?>);
-	    }
-  </script>
-
+    <script language="javascript">
+      function basicPopup() {
+        var message = <?php echo json_encode($message); ?>;
+        if(message != null){
+          alert(message);
+          <?php $message = null; ?>;
+        }
+      }
+    </script>
 
 </head> 
 
