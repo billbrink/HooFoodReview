@@ -72,6 +72,9 @@
         $DishSort = "Runk Options";
         $Dishes = getDishesByDH("Runk");
       }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateRate") {
+
+      }
     }
 ?>
 
@@ -104,7 +107,9 @@ table, th, td {
       }
 
       function ratingsPopup() {
-        prompt()
+        var rate = prompt("Rate (1-5): ", "");
+        if(rate != null)
+          document.getElementById("yourRate").innerHTML = rate;
       }
     </script>
 
@@ -150,7 +155,7 @@ table, th, td {
     <th width="10%">Dining Hall</th>        
     <th width="10%">Ethnicity</th>
     <th width="10%">Average Rating</th>
-    <th width="10%">Rate</th> 
+    <th width="10%">Your Rate</th>
     <th width="10%">Ingredients</th>   
   </tr>
   </thead>
@@ -162,7 +167,8 @@ table, th, td {
       <td><?php echo $Dish['Avg_Rating']; ?></td>
       <td>
         <form action="dishes.php" method="post">
-          <input type="submit" onclick="ratingsPopup()" value="Rate" name="btnAction" class="btn btn-primary" />
+          <p id="yourRate" style="float: center"></p>
+          <input type="button" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: right"/>
       </td>
       <td>
         <form action="dishes.php" method="post">

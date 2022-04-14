@@ -1,13 +1,12 @@
+<?php
+
 // client id: 741369040500-97fqjc6h24v7v04ibbgr0u38sk04r6nm.apps.googleusercontent.com
 // client secret: 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
-
-
-<?php
 
 $username = 'no_privs';
 $password = '';
 $host = 'hoo-food-review:us-east4:hfr-db';
-$dbname = '';
+$dbname = 'HooFoodReview';
 $dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFoodReview";
 
 ?>
@@ -30,7 +29,7 @@ $dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFo
     <h1>Hoo Food Review Login</h1>
     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
       Name: <input type="text" name="username" class="form-control" autofocus required /> <br/>
-      Password: <input type="password" name="pwd" class="form-control" required /> <br/>
+      Password: <input type="password" name="pwd" class="form-control" /> <br/>
       <input type="submit" value="Sign in" class="btn btn-light"  />   
     </form>
   </div>
@@ -66,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
       else
       {
          // set session attributes
-         $_SESSION['username'] = $user;
+         $_SESSION['username'] = getallheaders()['X-Goog-Authenticated-User-Id'] ?? null;;
          
          $hash_pwd = md5($pwd);
 //          $hash_pwd = password_hash($pwd, PASSWORD_DEFAULT);
