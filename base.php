@@ -1,3 +1,7 @@
+// client id: 741369040500-97fqjc6h24v7v04ibbgr0u38sk04r6nm.apps.googleusercontent.com
+// client secret: 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
+
+
 <?php
 
 $username = 'no_privs';

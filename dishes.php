@@ -6,6 +6,7 @@
     $DN = null;
     $DH = null;
     $message = null;
+    $DishSort = "Sort by Dish";
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
@@ -14,37 +15,61 @@
         $DN = $_POST['dn'];
         $DH = $_POST['dh'];
         $message = getIngredientsMessage($DN, $DH);
+        if($DishSort == "Sort by Dining Hall")
+          $Dishes = getDishesDHSort();
+        else if($DishSort == "Sort by Dish")
+          $Dishes = getDishes();
+        else if($DishSort == "Sort by Ethnicity")
+          $Dishes = getDishesEthnicitySort();
+        else if($DishSort == "Rating High to Low")
+          $Dishes = getDishesRatingSort("DESC");
+        else if($DishSort == "Rating Low to High")
+          $Dishes = getDishesRatingSort("ASC");
+        else if($DishSort == "O-Hill Options")
+          $Dishes = getDishesByDH("O-Hill");
+        else if($DishSort == "Newcomb Options")
+          $Dishes = getDishesByDH("Newcomb");
+        else if($DishSort == "Runk Options")
+          $Dishes = getDishesByDH("Runk");
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
       {
+        $DishSort = "Sort by Dining Hall";
         $Dishes = getDishesDHSort();
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dish")
       {
+        $Dish = "Sort by Dish";
         $Dishes = getDishes();
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Ethnicity")
       {
+        $DishSort = "Sort by Ethnicity";
         $Dishes = getDishesEthnicitySort();
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating High to Low")
       {
+        $DishSort = "Rating High to Low";
         $Dishes = getDishesRatingSort("DESC");
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating Low to High")
       {
+        $DishSort = "Rating Low to High";
         $Dishes = getDishesRatingSort("ASC");
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "O-Hill Options")
       {
+        $DishSort = "O-Hill Options";
         $Dishes = getDishesByDH("O-Hill");
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Newcomb Options")
       {
+        $DishSort = "Newcomb Options";
         $Dishes = getDishesByDH("Newcomb");
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Runk Options")
       {
+        $DishSort = "Runk Options";
         $Dishes = getDishesByDH("Runk");
       }
     }
@@ -70,12 +95,16 @@ table, th, td {
     <title>The Hoo Food Review</title>
 
     <script language="javascript">
-      function basicPopup() {
+      function ingredientsPopup() {
         var message = <?php echo json_encode($message); ?>;
         if(message != null){
           alert(message);
           <?php $message = null; ?>;
         }
+      }
+
+      function ratingsPopup() {
+        prompt()
       }
     </script>
 
@@ -86,7 +115,7 @@ table, th, td {
 <button class="tablink" onclick="location.href='diningHalls.php'" type="button">Dining Halls</button>
 <button class="tablink" onclick="location.href='dishes.php'" type="button">Dishes</button>
 
-<body onload="basicPopup()">
+<body onload="ingredientsPopup()">
 
 <div class="container">
     <h1>Sort Options</h1>
@@ -133,7 +162,7 @@ table, th, td {
       <td><?php echo $Dish['Avg_Rating']; ?></td>
       <td>
         <form action="dishes.php" method="post">
-          <input type="submit" value="Rate" name="btnAction" class="btn btn-primary" />
+          <input type="submit" onclick="ratingsPopup()" value="Rate" name="btnAction" class="btn btn-primary" />
       </td>
       <td>
         <form action="dishes.php" method="post">
