@@ -86,7 +86,7 @@ table, th, td {
 <button class="tablink" onclick="location.href='diningHalls.php'" type="button">Dining Halls</button>
 <button class="tablink" onclick="location.href='dishes.php'" type="button">Dishes</button>
 
-<body>
+<body onload="basicPopup()">
 
 <div class="container">
     <h1>Sort Options</h1>
