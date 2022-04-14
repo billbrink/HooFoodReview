@@ -3,49 +3,53 @@
     require('HooFoodReview_db.php');
 
     $Dishes = getDishes();
-    $Dish = "";
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST')
-{
-  if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Ingredients")
-  {
-    //$Ingredient_to_display = $_POST['ing'];
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
-  {
-    $Dishes = getDishesDHSort();
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dish")
-  {
-    $Dishes = getDishes();
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Ethnicity")
-  {
-    $Dishes = getDishesEthnicitySort();
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating High to Low")
-  {
-    $Dishes = getDishesRatingSort("DESC");
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating Low to High")
-  {
-    $Dishes = getDishesRatingSort("ASC");
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "O-Hill Options")
-  {
-    $Dishes = getDishesByDH("O-Hill");
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Newcomb Options")
-  {
-    $Dishes = getDishesByDH("Newcomb");
-  }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Runk Options")
-  {
-    $Dishes = getDishesByDH("Runk");
-  }
-}
+    $DN = null;
+    $DH = null;
 ?>
+<?php
+    if ($_SERVER['REQUEST_METHOD'] == 'POST')
+    {
+      if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Ingredients")
+      {
+        $DN = $_POST['dn'];
+        $DH = $_POST['dh'];
+        echo "<script>basicPopup();</script>";
 
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
+      {
+        $Dishes = getDishesDHSort();
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dish")
+      {
+        $Dishes = getDishes();
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Ethnicity")
+      {
+        $Dishes = getDishesEthnicitySort();
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating High to Low")
+      {
+        $Dishes = getDishesRatingSort("DESC");
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Rating Low to High")
+      {
+        $Dishes = getDishesRatingSort("ASC");
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "O-Hill Options")
+      {
+        $Dishes = getDishesByDH("O-Hill");
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Newcomb Options")
+      {
+        $Dishes = getDishesByDH("Newcomb");
+      }
+      else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Runk Options")
+      {
+        $Dishes = getDishesByDH("Runk");
+      }
+    }
+?>
 
 <!DOCTYPE html>
 <html>
@@ -65,6 +69,30 @@ table, th, td {
     <meta name="description" content="Basic web app for interacting with Hoo Food Review">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Hoo Food Review</title>
+
+    <script type="text/javascript">
+      // JavaScript popup window function
+	    function basicPopup() {
+        <?php
+          $Ingredients = getIngredients($DN, $DH);
+          $Nuts = 0;
+          $Vegan = 0;
+          $GlutenFree = 0;
+          $ShellFish = 0;
+          $Dairy = 0;
+          $Vegetarian = 0;
+          $message = "Ingredients \n";
+          foreach ($Ingredients as $i):
+            $message .= "\t";
+            $message .= $i['Ingredient_Name'];
+            $message .= "\n";
+          endforeach
+        ?>
+        alert(<?php echo json_encode($message); ?>);
+	    }
+  </script>
+
+
 </head> 
 
 <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
@@ -113,39 +141,23 @@ table, th, td {
   </thead>
   <?php foreach($Dishes as $Dish): ?>
     <tr>
-    <td><?php echo $Dish['Dish_Name']; ?></td>
-    <td><?php echo $Dish['DH_Name']; ?></td>
-    <td><?php echo $Dish['Ethnicity']; ?></td>
-    <td><?php echo $Dish['Avg_Rating']; ?></td>
-    <td>
+      <td><?php echo $Dish['Dish_Name']; ?></td>
+      <td><?php echo $Dish['DH_Name']; ?></td>
+      <td><?php echo $Dish['Ethnicity']; ?></td>
+      <td><?php echo $Dish['Avg_Rating']; ?></td>
+      <td>
         <form action="dishes.php" method="post">
-            <input type="submit" value="Rate" name="btnAction"
-            class="btn btn-primary" />
-  </td>
-  <td>
+          <input type="submit" value="Rate" name="btnAction" class="btn btn-primary" />
+      </td>
+      <td>
         <form action="dishes.php" method="post">
-           <!--- <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" /> --->
-           <button class="tablink" 
-           onclick="<?php
-              echo '<script type="text/JavaScript"';
-              echo 'alert("hi")';
-              echo '</script>';
-           ?>" type="button" value="Ingredients" name="btnAction">Ingredients</button>
-  </form>
-  </td>
-  </tr>
+          <input type="hidden" name="dn" value="<?php echo $Dish['Dish_Name']?>" />
+          <input type="hidden" name="dh" value="<?php echo $Dish['DH_Name']?>"/>
+          <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" />
+        </form>
+      </td>
+    </tr>
   <?php endforeach; ?>
   </table>
-
-  <script type="text/JavaScript">
-// JavaScript popup window function
-	function basicPopup(dish) {
-    <?php
-      
-    ?>
-	}
-  
-  </script>
-
 </body> 
-</html> 
+</html>

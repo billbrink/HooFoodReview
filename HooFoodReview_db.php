@@ -122,7 +122,6 @@ function getDishesRatingSort($order)
 
 function getDishesByDH($dh)
 {
-
     global $db;
 
     $query = "select * from Dish where DH_Name = :dh";
@@ -140,14 +139,15 @@ function getDishesByDH($dh)
 
 }
 
-function getIngredients()
+function getIngredients($dish_name, $dh)
 {
     global $db;
 
-    $query = "select * from Contains Natural Join Ingredient Order By Dish_Name";
+    $query = "select * from Contains natural join Dish where Dish_Name = :dn and DH_Name = :dh";
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":dn", $dish_name);
+    $statement->bindValue(":dh", $dh);
     $statement->execute();
 
     $results = $statement->fetchAll();
@@ -158,5 +158,4 @@ function getIngredients()
     return $results;
 
 }
-
 ?>
