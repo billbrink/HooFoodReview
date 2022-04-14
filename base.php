@@ -1,3 +1,15 @@
+<?php
+
+$username = 'no_privs';
+$password = '';
+$host = 'hoo-food-review:us-east4:hfr-db';
+$dbname = '';
+$dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFoodReview";
+
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +20,8 @@
   <title>Hoo Food Review</title>    
 </head>
 
-<button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-<button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
-
 <body>
-  
+
   <div class="container">
     <h1>Hoo Food Review Login</h1>
     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
@@ -39,18 +48,21 @@ function reject($entry)
 if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
 {
    $user = trim($_POST['username']);
-   if (!ctype_alnum($user))   // ctype_alnum() check if the values contain only alphanumeric data
+   if (!ctype_alnum($user)) {  // ctype_alnum() check if the values contain only alphanumeric data
       reject('User Name');
-		
+      echo ('user fail');
+   }
    if (isset($_POST['pwd']))
    {
       $pwd = trim($_POST['pwd']);
-      if (!ctype_alnum($pwd))
+      if (!ctype_alnum($pwd)) {
          reject('Password');
+         echo ('pass fail');
+      }
       else
       {
          // set session attributes
-         $_SESSION['user'] = $user;
+         $_SESSION['username'] = $user;
          
          $hash_pwd = md5($pwd);
 //          $hash_pwd = password_hash($pwd, PASSWORD_DEFAULT);
@@ -59,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
          $_SESSION['pwd'] = $hash_pwd;
          
          // redirect the browser to another page using the header() function to specify the target URL
-         header('Location: survey-instruction.php');
+         header('Location: diningHalls.php');
       }
    }
 }
