@@ -73,7 +73,7 @@
         $Dishes = getDishesByDH("Runk");
       }
       else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateRate") {
-
+        
       }
     }
 ?>
@@ -167,8 +167,8 @@ table, th, td {
       <td><?php echo $Dish['Avg_Rating']; ?></td>
       <td>
         <form action="dishes.php" method="post">
-          <p id="yourRate" style="float: center"></p>
-          <input type="button" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: right"/>
+          <p id="yourRate"></p>
+          <input type="submit" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: right"/>
       </td>
       <td>
         <form action="dishes.php" method="post">
