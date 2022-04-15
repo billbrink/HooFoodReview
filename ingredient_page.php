@@ -1,4 +1,22 @@
 <?php 
+
+echo "<script type = 'text/javascript'>
+    import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+     .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        // ...
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+  });
+</script>";
+
     require('connect-db.php');
     require('HooFoodReview_db.php');
 
