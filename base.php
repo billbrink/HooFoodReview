@@ -1,15 +1,45 @@
 <?php
 
+require('HooFoodReview_db.php');
+require('connect-db.php');
+
 // client id: 741369040500-97fqjc6h24v7v04ibbgr0u38sk04r6nm.apps.googleusercontent.com
 // client secret: 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
 
-$username = 'no_privs';
-$password = '';
-$host = 'hoo-food-review:us-east4:hfr-db';
-$dbname = 'HooFoodReview';
-$dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFoodReview";
+//set up our database connection for auth purposes
 
-?>
+// $username = 'login';
+// $password = '';
+// $host = 'hoo-food-review:us-east4:hfr-db';
+// $dbname = 'HooFoodReview';
+// $dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFoodReview";
+
+// try 
+// {
+//    $db = new PDO($dsn, $username, $password);
+   
+//    // display a message to let us know that we are connected to the database 
+// }
+// catch (PDOException $e)     // handle a PDO exception (errors thrown by the PDO library)
+// {
+//    // Call a method from any object, use the object's name followed by -> and then method's name
+//    // All exception objects provide a getMessage() method that returns the error message 
+//    $error_message = $e->getMessage();        
+//    echo "<p>An error occurred while connecting to the database: $error_message </p>";
+// }
+// catch (Exception $e)       // handle any type of exception
+// {
+//    $error_message = $e->getMessage();
+//    echo "<p>Error message: $error_message </p>";
+// }
+
+
+session_start();    // make sessions available
+// Session data are accessible from an implicit $_SESSION global array variable
+// after a call is made to the session_start() function.
+
+
+// ?>
 
 
 
@@ -33,12 +63,6 @@ $dsn = "mysql:unix_socket=/cloudsql/hoo-food-review:us-east4:hfr-db;dbname=HooFo
       <input type="submit" value="Sign in" class="btn btn-light"  />   
     </form>
   </div>
-
-
-<?php session_start();    // make sessions available
-// Session data are accessible from an implicit $_SESSION global array variable
-// after a call is made to the session_start() function.
-?>
 
 <?php
 // Define a function to handle failed validation attempts 
@@ -64,17 +88,30 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
       }
       else
       {
-         // set session attributes
-         $_SESSION['username'] = getallheaders()['X-Goog-Authenticated-User-Id'] ?? null;;
-         
-         $hash_pwd = md5($pwd);
-//          $hash_pwd = password_hash($pwd, PASSWORD_DEFAULT);
-//          $hash_pwd = password_hash($pwd, PASSWORD_BCRYPT);
-         
-         $_SESSION['pwd'] = $hash_pwd;
-         
-         // redirect the browser to another page using the header() function to specify the target URL
-         header('Location: diningHalls.php');
+         echo($_SESSION['username']);
+         foreach(getUsers() as $user_arr){
+            if($user == $user_arr["user_computingID"]) {
+               $hash_pwd = md5($pwd);
+               if($hash_pwd == $user_arr["auth_string"]) {
+                  echo("it works ");
+                  $_SESSION["username"] = $user;
+                  // redirect the browser to another page using the header() function to specify the target URL
+                  header('Location: diningHalls.php/', true, 301);
+               }
+            }
+         }
+         foreach(getAdmins() as $ad_arr){
+            if($user == $ad_arr["admin_computingID"]) {
+               $hash_pwd = md5($pwd);
+               if($hash_pwd == $ad_arr["auth_string"]) {
+                  echo("it works ");
+                  $_SESSION["username"] = $user;
+                  echo($_SESSION['username']);
+                  // redirect the browser to another page using the header() function to specify the target URL
+                  header('Location: diningHalls.php/', true, 301);
+               }
+            }
+         }
       }
    }
 }

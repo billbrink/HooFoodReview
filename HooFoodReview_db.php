@@ -58,6 +58,41 @@ function getDishes()
 
 }
 
+function getUsers() {
+
+    global $db;
+
+    $query = "select * from User";
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+
+    return $results;
+}
+
+function getAdmins() {
+
+    global $db;
+
+    $query = "select * from Admin";
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+
+    return $results;
+}
+
+
 function getDishesDHSort()
 {
     global $db;

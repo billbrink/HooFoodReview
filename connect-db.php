@@ -33,8 +33,15 @@
 // 2. On the cloud SQL connections page, add authorized networks, enter the IP address
 ////////////////////////////////////////////
 
+
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on local XAMPP) **/
-$username = 'root';
+//$username = 'login';
+if (!isset($_SESSION["username"])) {
+   $username = 'login';
+}
+else {
+   $username = $_SESSION['username'];
+}
 $password = '';
 $host = 'hoo-food-review:us-east4:hfr-db';
 $dbname = 'HooFoodReview';

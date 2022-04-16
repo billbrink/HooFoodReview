@@ -2,6 +2,7 @@
 require('connect-db.php');
 require('HooFoodReview_db.php');
 
+
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
 $Runk_Hours = getDHHours('Runk');
@@ -106,6 +107,10 @@ if (!isset($_SESSION['user']))
   <hr/>
 
 <?php 
+
+echo("You are logged in as ");
+echo($_SESSION["username"]);
+
 }
 else 
    header('Location: base.php');
