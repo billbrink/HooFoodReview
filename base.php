@@ -34,6 +34,7 @@ require('connect-db.php');
 // }
 
 
+
 session_start();    // make sessions available
 // Session data are accessible from an implicit $_SESSION global array variable
 // after a call is made to the session_start() function.
@@ -88,13 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
       }
       else
       {
-         echo($_SESSION['username']);
+         echo($_SESSION['username1']." "."hi");
          foreach(getUsers() as $user_arr){
             if($user == $user_arr["user_computingID"]) {
                $hash_pwd = md5($pwd);
                if($hash_pwd == $user_arr["auth_string"]) {
                   echo("it works ");
-                  $_SESSION["username"] = $user;
+                  $_SESSION["username1"] = $user;
                   // redirect the browser to another page using the header() function to specify the target URL
                   header('Location: diningHalls.php/', true, 301);
                }
@@ -105,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
                $hash_pwd = md5($pwd);
                if($hash_pwd == $ad_arr["auth_string"]) {
                   echo("it works ");
-                  $_SESSION["username"] = $user;
-                  echo($_SESSION['username']);
+                  $_SESSION["username1"] = $user;
+                  echo($_SESSION['username1']);
                   // redirect the browser to another page using the header() function to specify the target URL
                   header('Location: diningHalls.php/', true, 301);
                }

@@ -36,7 +36,7 @@
 
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on local XAMPP) **/
 //$username = 'login';
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["username1"])) {
    $username = 'login';
 }
 else {

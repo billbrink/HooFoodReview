@@ -7,10 +7,7 @@ switch (@parse_url($_SERVER['REQUEST_URI'])['path']) {
       break; 
     case '/base.php':     // if you plan to also allow a URL with the file name 
       require 'base.php';
-      break;
-    case '/login.php':     // if you plan to also allow a URL with the file name 
-        require 'login.php';
-        break;              
+      break;            
     case '/diningHalls.php':
       require 'diningHalls.php';
       break;
