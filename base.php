@@ -130,6 +130,31 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
 if(isset($_SESSION['username1'])) {
    echo("You are logged in as ");
    echo($_SESSION["username1"]); 
+
+   <div class="container">
+      <h1>Logout</h1>
+
+  <form name="mainForm" action="dishes.php" method="post">
+
+  <input type="submit" value="Sort by Dining Hall" name="btnAction" class="btn btn-dark"
+          title="Sort by Dining Hall" />
+  <input type="submit" value="Sort by Dish" name="btnAction" class="btn btn-dark"
+          title="Sort by Dish" />
+  <input type="submit" value="Sort by Ethnicity" name="btnAction" class="btn btn-dark"
+          title="Sort by Ethnicity" />
+  <input type="submit" value="Rating High to Low" name="btnAction" class="btn btn-dark"
+          title="Sort by Rating High to Low" />
+  <input type="submit" value="Rating Low to High" name="btnAction" class="btn btn-dark"
+          title="Sort by Rating Low to High" />
+  <input type="submit" value="O-Hill Options" name="btnAction" class="btn btn-dark"
+          title="Find O-Hill Food Options" />
+  <input type="submit" value="Newcomb Options" name="btnAction" class="btn btn-dark"
+          title="Find Newcomb Food Options" />
+  <input type="submit" value="Runk Options" name="btnAction" class="btn btn-dark"
+          title="Find Runk Food Options" />
+  </form>
+  <hr/>
+
 } else {
    echo("Please login");
 }
