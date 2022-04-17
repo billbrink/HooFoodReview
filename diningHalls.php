@@ -116,9 +116,11 @@ echo("You are logged in as ");
 echo($_SESSION["username1"]);
 
 }
-else 
+else {
    header('Location: base.php');
+   echo("No access to this page");
    // Force login. If the user has not logged in, redirect to login page
+}
 ?>
 
 </body> 
