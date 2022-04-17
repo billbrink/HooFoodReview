@@ -1,6 +1,10 @@
 <?php
-    require('connect-db.php');
     require('HooFoodReview_db.php');
+
+
+    $session_name = "login_sess";
+    session_name($session_name);
+    session_start(); 
 
     if (isset($_SESSION['username1']))
     {
@@ -77,6 +81,7 @@
         }
         else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateRate") {
           
+          $Dishes = getDishesByDH($DishSort);
         }
       }
   ?>
@@ -112,7 +117,7 @@
         function ratingsPopup() {
           var rate = prompt("Rate (1-5): ", "");
           if(rate != null)
-            document.getElementById("yourRate").innerHTML = rate;
+            document.getElementById("yourRate").innerHTML = rate + "/5";
         }
       </script>
 
@@ -170,7 +175,7 @@
         <td><?php echo $Dish['Avg_Rating']; ?></td>
         <td>
           <form action="dishes.php" method="post">
-            <p id="yourRate"></p>
+            <input type="text" id="yourRate" value="<?php echo getUserRate($_SESSION['username1'], $Dish['Dish_Name'])?>" />
             <input type="submit" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: right"/>
         </td>
         <td>

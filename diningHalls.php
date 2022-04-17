@@ -1,11 +1,11 @@
 <?php
-require('connect-db.php');
 require('HooFoodReview_db.php');
 
 $session_name = "login_sess";
 session_name($session_name);
-session_start(); 
+session_start();
 
+echo $_SESSION['username'];
 
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
@@ -113,7 +113,7 @@ if (isset($_SESSION['username1']))
 <?php 
 
 echo("You are logged in as ");
-echo($_SESSION["username1"]);
+echo($_SESSION['username1']);
 
 }
 else {

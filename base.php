@@ -5,7 +5,6 @@ session_name($session_name);
 session_start();    // make sessions available
 
 require('HooFoodReview_db.php');
-//require('connect-db.php');
 
 // client id: 741369040500-97fqjc6h24v7v04ibbgr0u38sk04r6nm.apps.googleusercontent.com
 // client secret: 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
@@ -18,6 +17,7 @@ if (!isset($_SESSION['username1'])) {
 else {
    $username = $_SESSION['username1'];
 }
+
 $password = '';
 $host = 'hoo-food-review:us-east4:hfr-db';
 $dbname = 'HooFoodReview';
@@ -130,6 +130,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
 if(isset($_SESSION['username1'])) {
    echo("You are logged in as ");
    echo($_SESSION["username1"]); 
+   echo("\n");
+   ?> 
+   <!-- <div class="container">
+    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+      <input type="submit" value="Logout" class="btn btn-light" onClick=<?php $_SESSION["username1"] = 'login'?> />
+    </form>
+  </div> -->
+   <?php
 } else {
    echo("Please login");
 }

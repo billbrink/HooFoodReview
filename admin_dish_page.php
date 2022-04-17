@@ -43,9 +43,15 @@
   {
     $Dishes = getDishesByDH("Runk");
   }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add")
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddDish")
   {
-    $Dishes = getDishesByDH("Runk");
+    addDish($_POST['dish'], $_POST['dining_hall'], $_POST['ethnicity']);
+  }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddIngredient")
+  {
+    $Nuts = false;
+    
+    addIngredient($_POST['newingredient'], $_POST['nuts'], $_POST['vegan'], $_POST['gluten_free'], $_POST['shellfish'], $_POST['dairy_free'], $_POST['vegetarian']);
   }
 }
 ?>
@@ -121,6 +127,20 @@ table, th, td {
   <div class = "row mb-3 mx-3">
       Ingredients:
       <input type="text" class="form-control" name="ingredients" required />
+  </div> 
+  <input type="submit" value="AddDish" name="btnAction" class="btn btn-dark"
+        title="insert a dish" />
+
+</form>
+<hr/>
+
+<div class="container">
+  <h1>Add an Ingredient</h1>  
+
+  <form name="mainAdminForm" action="admin_dish_page.php" method="post">
+  <div class = "row mb-3 mx-3">
+      Ingredient:
+      <input type="text" class="form-control" name="newingredient" required />
   </div>
   <input type="checkbox" id="vegetarian" name="vegetarian" value="vegetarian">
   <label for="vegetarian"> Vegetarian</label><br>
@@ -134,10 +154,11 @@ table, th, td {
   <label for="vegan"> Vegan</label><br>
   <input type="checkbox" id="nuts" name="nuts" value="nuts">
   <label for="nuts"> Nuts</label><br>  
-  <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
-        title="insert a dish" />
+  <input type="submit" value="AddIngredient" name="btnAction" class="btn btn-dark"
+        title="insert an ingredient" />
 
 </form>
+<hr/>
 
 <h1>Dishes</h1>
 <!-- <div class="row justify-content-center">   -->

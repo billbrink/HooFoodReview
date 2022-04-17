@@ -37,6 +37,22 @@ function setDHHours($id, $dh, $day, $open, $close)
     $statement->closeCursor();
 }
 
+function addIngredient($iname, $nut, $vegan, $gf, $shell, $df, $veg)
+{
+    global $db;
+
+    $query = "insert into Ingredient values (:iname, :nut, :vegan, :gf, :shell, :df, :veg)";
+    $statement->bindValue(":iname", $iname);
+    $statement->bindValue(":nut", $nut);
+    $statement->bindValue(":vegan", $vegan);
+    $statement->bindValue(":gf", $gf);
+    $statement->bindValue(":shell", $shell);
+    $statement->bindValue(":df", $df);
+    $statement->bindValue(":veg", $veg);
+    $statement->execute();
+
+}
+
 function removeDish($dish, $dh)
 {
     global $db;
@@ -51,11 +67,20 @@ function removeDish($dish, $dh)
     $statement->closeCursor();
 }
 
-function addUser()
+function addRemoveUser($id, $act, $admin, $uname, $uid)
 {
     global $db;
 
-    $query = "insert into Add_Remove where "
+    $query = "insert into Add_Remove values (:id, :act, :admin, :uname, :uid)";
+    $statement = $db->prepare($query);
+    $statement->bindValue(":id", $id);
+    $statement->bindValue(":act", $act);
+    $statement->bindValue(":admin", $admin);
+    $statement->bindValue(":uname", $uname);
+    $statement->bindValue("uid", $uid);
+    $statement->execute();
+
+    $statement->closeCursor();
 }
 
 function getDHLocation($dh)
@@ -293,5 +318,20 @@ function getIngredientsMessage($dn, $dh)
         $message .= "\tNone!\n";
 
     return $message;
+}
+
+function getUserRate($username, $dish) {
+    global $db;
+
+    $query = "select Rating from Rates where user_computingID = :u and Dish_Name = :d";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":u", $username);
+    $statement->bindValue(":d", $dish);
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    return $result;
 }
 ?>
