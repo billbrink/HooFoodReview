@@ -75,9 +75,6 @@
           $DishSort = "Runk Options";
           $Dishes = getDishesByDH("Runk");
         }
-        else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateRate") {
-          
-        }
       }
   ?>
 
@@ -110,7 +107,7 @@
         }
 
         function ratingsPopup() {
-          var rate = prompt("Rate (1-5): ", "");
+          var rate = prompt("Rate: ", "1-5");
           if(rate != null)
             document.getElementById("yourRate").innerHTML = rate;
         }
@@ -120,8 +117,20 @@
 
   <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
-  <button class="tablink" onclick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-  <button class="tablink" onclick="location.href='dishes.php'" type="button">Dishes</button>
+  <?php 
+if ($_SESSION['isAdmin'] == FALSE) {
+?>
+   <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<?php 
+}
+else if ($_SESSION['isAdmin'] == TRUE) { 
+?>
+   <button class="tablink" onClick="location.href='admin_dh_page.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='admin_dish_page.php'" type="button">Dishes</button>
+<?php
+}
+?>
 
   <body onload="ingredientsPopup()">
 
@@ -159,19 +168,23 @@
       <th width="10%">Ethnicity</th>
       <th width="10%">Average Rating</th>
       <th width="10%">Your Rate</th>
+      <th width="10%">Update Rate</th>
       <th width="10%">Ingredients</th>   
     </tr>
     </thead>
-    <?php foreach($Dishes as $Dish): ?>
+    <?php foreach($Dishes as $Dish): 
+      $rate = getUserRates($_SESSION['username1'], $Dish['Dish_Name'], $Dish['DH_Name']);
+      echo($rate['user_computingID']);
+      ?>
       <tr>
         <td><?php echo $Dish['Dish_Name']; ?></td>
         <td><?php echo $Dish['DH_Name']; ?></td>
         <td><?php echo $Dish['Ethnicity']; ?></td>
         <td><?php echo $Dish['Avg_Rating']; ?></td>
+        <td><?php echo $rate['Rating']; ?></td>
         <td>
           <form action="dishes.php" method="post">
-            <p id="yourRate"></p>
-            <input type="submit" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: right"/>
+            <input type="submit" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary"/>
         </td>
         <td>
           <form action="dishes.php" method="post">

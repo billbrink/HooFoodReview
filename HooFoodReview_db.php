@@ -20,6 +20,100 @@ function getDHHours($dh)
     return $results;
 }
 
+function setDHHours($id, $dh, $day, $open, $close)
+{
+    global $db;
+
+    $query = "insert into Update_Dining_Hall values (:id, :dh, :day, :open, :close)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":id", $id);
+    $statement->bindValue(":dh", $dh);
+    $statement->bindValue(":day", $day);
+    $statement->bindValue(":open", $open);
+    $statement->bindValue(":close", $close);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function addIngredient($iname, $nut, $vegan, $gf, $shell, $df, $veg)
+{
+    global $db;
+
+    $query = "insert into Ingredient values (:iname, :nut, :vegan, :gf, :shell, :df, :veg)";
+    $statement->bindValue(":iname", $iname);
+    $statement->bindValue(":nut", $nut);
+    $statement->bindValue(":vegan", $vegan);
+    $statement->bindValue(":gf", $gf);
+    $statement->bindValue(":shell", $shell);
+    $statement->bindValue(":df", $df);
+    $statement->bindValue(":veg", $veg);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function addDish($dish, $dh, $eth)
+{
+    global $db;
+
+    $query = "insert into Dish values (:dish, :dh, null, :eth)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":dh", $dh);
+    $statement->bindValue(":eth", $eth);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function updateContains($dish, $i)
+{
+    global $db;
+
+    $query = "insert into Contains values (:dish, :i)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":i", $i);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function removeDish($dish, $dh)
+{
+    global $db;
+
+    $query = "delete from Dish where Dish_Name = :dish and DH_Name = :dh";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":dh", $dh);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function addRemoveUser($id, $act, $admin, $uname, $uid)
+{
+    global $db;
+
+    $query = "insert into Add_Remove values (:id, :act, :admin, :uname, :uid)";
+    $statement = $db->prepare($query);
+    $statement->bindValue(":id", $id);
+    $statement->bindValue(":act", $act);
+    $statement->bindValue(":admin", $admin);
+    $statement->bindValue(":uname", $uname);
+    $statement->bindValue("uid", $uid);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+
 function getDHLocation($dh)
 {
 
@@ -150,9 +244,7 @@ function getDishesRatingSort($order)
 
     $statement->closeCursor();
 
-
     return $results;
-
 }
 
 function getDishesByDH($dh)
@@ -174,11 +266,28 @@ function getDishesByDH($dh)
 
 }
 
+function getAllIngredients(){
+    global $db;
+
+    $query = "select * from Ingredient";
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+
+    return $results;
+
+}
+
 function getIngredients($dish_name, $dh)
 {
     global $db;
 
-    $query = "select * from Contains natural join Dish where Dish_Name = :dn and DH_Name = :dh";
+    $query = "select * from Contains natural join Dish natural join Ingredient where Dish_Name = :dn and DH_Name = :dh";
 
     $statement = $db->prepare($query);
     $statement->bindValue(":dn", $dish_name);
@@ -255,5 +364,24 @@ function getIngredientsMessage($dn, $dh)
         $message .= "\tNone!\n";
 
     return $message;
+}
+
+
+function getUserRates($username, $dish, $dh) {
+    global $db;
+    $query = "select * from Rates where user_computingID = :u and Dish_Name = :dn and Dining_Hall = :dh";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":u", $username);
+    $statement->bindValue(":dn", $dish);
+    $statement->bindValue(":dh", $dh);
+    
+    $statement->execute();
+
+    $result = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+    return $result;
 }
 ?>

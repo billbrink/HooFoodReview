@@ -33,7 +33,18 @@ table, th, td {
     <meta name="description" content="Basic web app for interacting with Hoo Food Review">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Hoo Food Review</title>
+
+    <script language="javascript">
+        function hoursPopup(id, dh, day) {
+          var open = prompt("New opening time: ");
+          var close = prompt("New closing time: ");
+          if(open != null && close != null) {
+            setDHHours(id, dh, day, open, close);
+          }
+        }
+    </script>
 </head> 
+
 
 <?php
 if (isset($_SESSION['username1']))
@@ -71,7 +82,10 @@ else if ($_SESSION['isAdmin'] == TRUE) {
     </thead>
   <?php foreach($OHill_Hours as $Ohours): ?>
       <tr>
-      <td><?php echo $Ohours['day_of_week']; ?></td>
+      <td><?php echo $Ohours['day_of_week']; ?>      
+      <form action="admin_dh_page.php" method="post">
+        <button onclick="hoursPopup('<?php echo $_SESSION['username1'] ?>', 'OHill', '<?php echo $Ohours['day_of_week']; ?>')"> Update </button>
+      </td>
       <td><?php echo $Ohours['open_time']; ?></td>
       <td><?php echo $Ohours['close_time']; ?></td>
     </tr>
@@ -93,7 +107,8 @@ else if ($_SESSION['isAdmin'] == TRUE) {
     </thead>
     <?php foreach($Newcomb_Hours as $Nhours): ?>
       <tr>
-      <td><?php echo $Nhours['day_of_week']; ?></td>
+      <td><?php echo $Nhours['day_of_week']; ?>      <input type="submit" value="Update" name="btnAction" class="btn btn-dark"
+        title="change"+<?php echo $Nhours['day_of_week']; ?> /></td>
       <td><?php echo $Nhours['open_time']; ?></td>
       <td><?php echo $Nhours['close_time']; ?></td>
     </tr>
@@ -114,7 +129,8 @@ else if ($_SESSION['isAdmin'] == TRUE) {
     </thead>
     <?php foreach($Runk_Hours as $Rhours): ?>
       <tr>
-      <td><?php echo $Rhours['day_of_week']; ?></td>
+      <td><?php echo $Rhours['day_of_week']; ?>      <input type="submit" value="Update" name="btnAction" class="btn btn-dark"
+        title="change"+<?php echo $Rhours['day_of_week']; ?> /></td>
       <td><?php echo $Rhours['open_time']; ?></td>
       <td><?php echo $Rhours['close_time']; ?></td>
     </tr>
