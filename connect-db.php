@@ -1,5 +1,3 @@
-
-
 <?php
 //taken from cs 4750 spring 22 course material
 
@@ -36,11 +34,16 @@
 
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on local XAMPP) **/
 //$username = 'login';
-if (!isset($_SESSION["username1"])) {
+
+$session_name = "login_sess";
+session_name($session_name);
+session_start(); 
+
+if (!isset($_SESSION['username1'])) {
    $username = 'login';
 }
 else {
-   $username = $_SESSION['username'];
+   $username = $_SESSION['username1'];
 }
 $password = '';
 $host = 'hoo-food-review:us-east4:hfr-db';

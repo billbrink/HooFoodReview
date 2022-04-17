@@ -2,6 +2,10 @@
 require('connect-db.php');
 require('HooFoodReview_db.php');
 
+$session_name = "login_sess";
+session_name($session_name);
+session_start(); 
+
 
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
@@ -32,7 +36,7 @@ table, th, td {
 </head> 
 
 <?php
-if (!isset($_SESSION['user']))
+if (isset($_SESSION['username1']))
 {
 ?> 
 
@@ -109,7 +113,7 @@ if (!isset($_SESSION['user']))
 <?php 
 
 echo("You are logged in as ");
-echo($_SESSION["username"]);
+echo($_SESSION["username1"]);
 
 }
 else 
