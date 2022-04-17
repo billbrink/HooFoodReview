@@ -43,6 +43,10 @@
   {
     $Dishes = getDishesByDH("Runk");
   }
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Add")
+  {
+    $Dishes = getDishesByDH("Runk");
+  }
 }
 ?>
 
@@ -97,6 +101,31 @@ table, th, td {
         title="Find Runk Food Options" />
 </form>
 <hr/>
+
+<div class="container">
+  <h1>Friend book</h1>  
+
+  <form name="mainAdminForm" action="admin_dish_page.php" method="post">
+  <div class = "row mb-3 mx-3">
+      Dish:
+      <input type="text" class="form-control" name="dish" required />
+  </div>
+  <div class = "row mb-3 mx-3">
+      Dining Hall:
+      <input type="text" class="form-control" name="dining_hall" required />
+  </div>
+  <div class = "row mb-3 mx-3">
+      Ethnicity:
+      <input type="text" class="form-control" name="ethnicity" required />
+  </div>
+  <div class = "row mb-3 mx-3">
+      Ingredients:
+      <input type="text" class="form-control" name="ingredients" required />
+  </div>
+  <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
+        title="insert a dish" />
+
+</form>
 
 <h1>Dishes</h1>
 <!-- <div class="row justify-content-center">   -->

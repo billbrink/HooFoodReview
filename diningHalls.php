@@ -2,6 +2,11 @@
 require('connect-db.php');
 require('HooFoodReview_db.php');
 
+$session_name = "login_sess";
+session_name($session_name);
+session_start(); 
+
+
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
 $Runk_Hours = getDHHours('Runk');
@@ -31,7 +36,7 @@ table, th, td {
 </head> 
 
 <?php
-if (!isset($_SESSION['user']))
+if (isset($_SESSION['username1']))
 {
 ?> 
 
@@ -106,10 +111,16 @@ if (!isset($_SESSION['user']))
   <hr/>
 
 <?php 
+
+echo("You are logged in as ");
+echo($_SESSION["username1"]);
+
 }
-else 
+else {
    header('Location: base.php');
+   echo("No access to this page");
    // Force login. If the user has not logged in, redirect to login page
+}
 ?>
 
 </body> 

@@ -1,5 +1,3 @@
-
-
 <?php
 //taken from cs 4750 spring 22 course material
 
@@ -33,8 +31,20 @@
 // 2. On the cloud SQL connections page, add authorized networks, enter the IP address
 ////////////////////////////////////////////
 
+
 /** S22, PHP (on GCP, local XAMPP, or CS server) connect to MySQL (on local XAMPP) **/
-$username = 'root';
+//$username = 'login';
+
+$session_name = "login_sess";
+session_name($session_name);
+session_start(); 
+
+if (!isset($_SESSION['username1'])) {
+   $username = 'login';
+}
+else {
+   $username = $_SESSION['username1'];
+}
 $password = '';
 $host = 'hoo-food-review:us-east4:hfr-db';
 $dbname = 'HooFoodReview';
