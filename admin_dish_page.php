@@ -103,7 +103,7 @@ table, th, td {
 <hr/>
 
 <div class="container">
-  <h1>Friend book</h1>  
+  <h1>Add a Dish</h1>  
 
   <form name="mainAdminForm" action="admin_dish_page.php" method="post">
   <div class = "row mb-3 mx-3">
@@ -122,6 +122,18 @@ table, th, td {
       Ingredients:
       <input type="text" class="form-control" name="ingredients" required />
   </div>
+  <input type="checkbox" id="vegetarian" name="vegetarian" value="vegetarian">
+  <label for="vegetarian"> Vegetarian</label><br>
+  <input type="checkbox" id="dairy_free" name="dairy_free" value="dairy_free">
+  <label for="dairy_free"> Dairy Free</label><br>
+  <input type="checkbox" id="shellfish" name="shellfish" value="shellfish">
+  <label for="shellfish"> Shellfish</label><br>
+  <input type="checkbox" id="gluten_free" name="gluten_free" value="gluten_free">
+  <label for="gluten_free"> Gluten Free</label><br>
+  <input type="checkbox" id="vegan" name="vegan" value="vegan">
+  <label for="vegan"> Vegan</label><br>
+  <input type="checkbox" id="nuts" name="nuts" value="nuts">
+  <label for="nuts"> Nuts</label><br>  
   <input type="submit" value="Add" name="btnAction" class="btn btn-dark"
         title="insert a dish" />
 

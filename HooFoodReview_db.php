@@ -27,7 +27,7 @@ function setDHHours($id, $dh, $day, $open, $close)
     $query = "insert into Update_Dining_Hall values (:id, :dh, :day, :open, :close)";
 
     $statement = $db->prepare($query);
-    $statement->bindValue(":id", $dh);
+    $statement->bindValue(":id", $id);
     $statement->bindValue(":dh", $dh);
     $statement->bindValue(":day", $day);
     $statement->bindValue(":open", $open);
@@ -35,6 +35,27 @@ function setDHHours($id, $dh, $day, $open, $close)
     $statement->execute();
 
     $statement->closeCursor();
+}
+
+function removeDish($dish, $dh)
+{
+    global $db;
+
+    $query = "delete from Dish where Dish_Name = :dish and DH_Name = :dh";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":dh", $dh);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function addUser()
+{
+    global $db;
+
+    $query = "insert into Add_Remove where "
 }
 
 function getDHLocation($dh)
