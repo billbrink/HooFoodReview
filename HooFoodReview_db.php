@@ -20,6 +20,23 @@ function getDHHours($dh)
     return $results;
 }
 
+function setDHHours($id, $dh, $day, $open, $close)
+{
+    global $db;
+
+    $query = "insert into Update_Dining_Hall values (:id, :dh, :day, :open, :close)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":id", $dh);
+    $statement->bindValue(":dh", $dh);
+    $statement->bindValue(":day", $day);
+    $statement->bindValue(":open", $open);
+    $statement->bindValue(":close", $close);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
 function getDHLocation($dh)
 {
 
