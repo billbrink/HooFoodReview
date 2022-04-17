@@ -17,6 +17,9 @@ switch (@parse_url($_SERVER['REQUEST_URI'])['path']) {
     case '/ingredient_page.php':
         require 'ingredient_page.php';
         break;
+    case '/admin_dish_page.php':
+        require 'admin_dish_page.php';
+        break;
    default:
       http_response_code(404);
       exit('Not Found');
