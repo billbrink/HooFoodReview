@@ -24,7 +24,7 @@ function setDHHours($id, $dh, $day, $open, $close)
 {
     global $db;
 
-    $query = "insert into Update_Dining_Hall values (:id, :dh, :day, :open, :close)";
+    $query = "insert into Update_Dining_Hall values (0, :id, :dh, :day, :open, :close)";
 
     $statement = $db->prepare($query);
     $statement->bindValue(":id", $id);
@@ -51,6 +51,36 @@ function addIngredient($iname, $nut, $vegan, $gf, $shell, $df, $veg)
     $statement->bindValue(":veg", $veg);
     $statement->execute();
 
+    $statement->closeCursor();
+}
+
+function addDish($dish, $dh, $eth)
+{
+    global $db;
+
+    $query = "insert into Dish values (:dish, :dh, null, :eth)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":dh", $dh);
+    $statement->bindValue(":eth", $eth);
+    $statement->execute();
+
+    $statement->closeCursor();
+}
+
+function updateContains($dish, $i)
+{
+    global $db;
+
+    $query = "insert into Contains values (:dish, :i)";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(":dish", $dish);
+    $statement->bindValue(":i", $i);
+    $statement->execute();
+
+    $statement->closeCursor();
 }
 
 function removeDish($dish, $dh)
@@ -71,7 +101,7 @@ function addRemoveUser($id, $act, $admin, $uname, $uid)
 {
     global $db;
 
-    $query = "insert into Add_Remove values (:id, :act, :admin, :uname, :uid)";
+    $query = "insert into Add_Remove values (0, :id, :act, :admin, :uname, :uid)";
     $statement = $db->prepare($query);
     $statement->bindValue(":id", $id);
     $statement->bindValue(":act", $act);
@@ -82,6 +112,7 @@ function addRemoveUser($id, $act, $admin, $uname, $uid)
 
     $statement->closeCursor();
 }
+
 
 function getDHLocation($dh)
 {
@@ -122,19 +153,12 @@ function getDishes()
 }
 
 function getUsers() {
-
     global $db;
-
     $query = "select * from User";
-
     $statement = $db->prepare($query);
     $statement->execute();
-
     $results = $statement->fetchAll();
-
     $statement->closeCursor();
-
-
     return $results;
 }
 
@@ -146,12 +170,8 @@ function getAdmins() {
 
     $statement = $db->prepare($query);
     $statement->execute();
-
     $results = $statement->fetchAll();
-
     $statement->closeCursor();
-
-
     return $results;
 }
 
@@ -213,9 +233,7 @@ function getDishesRatingSort($order)
 
     $statement->closeCursor();
 
-
     return $results;
-
 }
 
 function getDishesByDH($dh)
@@ -237,11 +255,28 @@ function getDishesByDH($dh)
 
 }
 
+function getAllIngredients(){
+    global $db;
+
+    $query = "select * from Ingredient";
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+
+    $results = $statement->fetchAll();
+
+    $statement->closeCursor();
+
+
+    return $results;
+
+}
+
 function getIngredients($dish_name, $dh)
 {
     global $db;
 
-    $query = "select * from Contains natural join Dish where Dish_Name = :dn and DH_Name = :dh";
+    $query = "select * from Contains natural join Dish natural join Ingredient where Dish_Name = :dn and DH_Name = :dh";
 
     $statement = $db->prepare($query);
     $statement->bindValue(":dn", $dish_name);
@@ -261,11 +296,12 @@ function getIngredientsMessage($dn, $dh)
 {
     $Ingredients = getIngredients($dn, $dh);
     $Nuts = 0;
-    $Vegan = 0;
-    $GlutenFree = 0;
+    $Vegan = 1;
+    $GlutenFree = 1;
     $ShellFish = 0;
-    $DairyFree = 0;
-    $Vegetarian = 0;
+    $DairyFree = 1;
+    $Vegetarian = 1;
+
     $message = "Ingredients in "; 
     $message .= $dn;
     $message .= " at ";
@@ -279,16 +315,16 @@ function getIngredientsMessage($dn, $dh)
 
         if($i['Nuts'] == 1)
             $Nuts = 1;
-        if($i['Vegan'] == 1)
-            $Vegan = 1;
-        if($i['Gluten_Free'] == 1)
-            $GlutenFree = 1;
+        if($i['Vegan'] == 0)
+            $Vegan = 0;
+        if($i['Gluten_Free'] == 0)
+            $GlutenFree = 0;
         if($i['Shellfish'] == 1)
             $ShellFish = 1;
-        if($i['Dairy_Free'] == 1)
-            $DairyFree = 1;
-        if($i['Vegetarian'] == 1)
-            $Vegetarian = 1;
+        if($i['Dairy_Free'] == 0)
+            $DairyFree = 0;
+        if($i['Vegetarian'] == 0)
+            $Vegetarian = 0;
     endforeach;
     
     $message .= "\nAllergies\n";
@@ -320,18 +356,63 @@ function getIngredientsMessage($dn, $dh)
     return $message;
 }
 
-function getUserRate($username, $dish) {
+
+function getUserRates($username, $dish, $dh) {
     global $db;
 
-    $query = "select Rating from Rates where user_computingID = :u and Dish_Name = :d";
+    $query = "select * from Rates where user_computingID = :u and Dish_Name = :dn and DH_Name = :dh";
 
     $statement = $db->prepare($query);
     $statement->bindValue(":u", $username);
-    $statement->bindValue(":d", $dish);
+    $statement->bindValue(":dn", $dish);
+    $statement->bindValue(":dh", $dh);
+    
     $statement->execute();
 
-    $result = $statement->fetchAll();
+    $result = $statement->fetch();
+
+    $statement->closeCursor();
 
     return $result;
+}
+
+function updateUserRate($username, $dish, $dh, $newRate) {
+    global $db;
+
+    $query1 = "select * from Rates where user_computingID = :u and Dish_Name = :dn and DH_Name = :dh";
+    $statement1 = $db->prepare($query1);
+    $statement1->bindValue(":u", $username);
+    $statement1->bindValue(":dn", $dish);
+    $statement1->bindValue(":dh", $dh);
+
+    $statement1->execute();
+
+    $result = $statement1->fetch();
+
+    $statement1->closeCursor();
+
+    $query2 = "";
+    $statement2 = null;
+
+    if($result == null) {
+        $query2 = "insert into Rates values(:u, :dn, :dh, :nr)";
+        $statement2 = $db->prepare($query2);
+        $statement2->bindValue(":u", $username);
+        $statement2->bindValue(":dn", $dish);
+        $statement2->bindValue(":dh", $dh);
+        $statement2->bindValue(":nr", $newRate);
+        $statement2->execute();
+        $statement2->closeCursor();
+    }
+    else {
+        $query2 = "update Rates set Rating = :nr where user_computingID = :u and Dish_Name = :dn and DH_Name = :dh";
+        $statement2 = $db->prepare($query2);
+        $statement2->bindValue(":u", $username);
+        $statement2->bindValue(":dn", $dish);
+        $statement2->bindValue(":dh", $dh);
+        $statement2->bindValue(":nr", $newRate);
+        $statement2->execute();
+        $statement2->closeCursor();
+    }
 }
 ?>

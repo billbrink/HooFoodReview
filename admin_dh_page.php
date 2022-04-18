@@ -6,10 +6,8 @@ $session_name = "login_sess";
 session_name($session_name);
 session_start(); 
 
-
-if (isset($_SESSION['username1']))
+if (isset($_SESSION['username1']) && $_SESSION['isAdmin'] == TRUE)
 {
-
 
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
@@ -18,6 +16,16 @@ $Runk_Hours = getDHHours('Runk');
 $OHill_Location = getDHLocation('O-Hill');
 $Newcomb_Location = getDHLocation('Newcomb');
 $Runk_Location = getDHLocation('Runk');
+
+if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateHours")
+  {
+    setDHHours($_SESSION['username1'], $_POST['dining_hall'], $_POST['day_of_week'], $_POST['open_time'], $_POST['close_time']);
+
+    $OHill_Hours = getDHHours('O-Hill');
+    $Newcomb_Hours = getDHHours('Newcomb');
+    $Runk_Hours = getDHHours('Runk');
+  }
+
 ?>
 
 
@@ -37,9 +45,8 @@ table, th, td {
     <meta name="description" content="Basic web app for interacting with Hoo Food Review">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Hoo Food Review</title>
+
 </head> 
-
-
 
   <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
@@ -59,6 +66,33 @@ else if ($_SESSION['isAdmin'] == TRUE) {
 ?>
 
   <body>
+
+  <div class="container">
+  <h1>Update Hours</h1>  
+
+  <form name="mainAdminForm" action="admin_dh_page.php" method="post">
+  <div class = "row mb-3 mx-3">
+      Dining Hall:
+      <input type="text" class="form-control" name="dining_hall" required />
+  </div>
+  <div class = "row mb-3 mx-3">
+      Day of the Week:
+      <input type="text" class="form-control" name="day_of_week" required />
+  </div>
+  <div class = "row mb-3 mx-3">
+      Open Time:
+      <input type="text" class="form-control" name="open_time" required />
+  </div>
+  <div class = "row mb-3 mx-3">
+      Close Time:
+      <input type="text" class="form-control" name="close_time" required />
+  </div> 
+  <input type="submit" value="UpdateHours" name="btnAction" class="btn btn-dark"
+        title="Update Hours" />
+
+</form>
+<hr/>
+
   <h1>O-Hill</h1>
   <h3>(Location: <?php echo $OHill_Location['Location'] ?>)<h3>
   <!-- <div class="row justify-content-center">   -->
@@ -135,5 +169,7 @@ else {
    // Force login. If the user has not logged in, redirect to login page
 }
 ?>
+
 </body> 
+
 </html> 

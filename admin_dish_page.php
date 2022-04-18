@@ -2,6 +2,13 @@
     require('connect-db.php');
     require('HooFoodReview_db.php');
 
+    $session_name = "login_sess";
+    session_name($session_name);
+    session_start(); 
+    
+    if (isset($_SESSION['username1']) && $_SESSION['isAdmin'] == TRUE)
+    {
+
     $Dishes = getDishes();
     $Ingredient_to_display = null;
 
@@ -9,7 +16,25 @@
 {
   if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Ingredients")
   {
-    
+    $DN = $_POST['dn'];
+          $DH = $_POST['dh'];
+          $message = getIngredientsMessage($DN, $DH);
+          if($DishSort == "Sort by Dining Hall")
+            $Dishes = getDishesDHSort();
+          else if($DishSort == "Sort by Dish")
+            $Dishes = getDishes();
+          else if($DishSort == "Sort by Ethnicity")
+            $Dishes = getDishesEthnicitySort();
+          else if($DishSort == "Rating High to Low")
+            $Dishes = getDishesRatingSort("DESC");
+          else if($DishSort == "Rating Low to High")
+            $Dishes = getDishesRatingSort("ASC");
+          else if($DishSort == "O-Hill Options")
+            $Dishes = getDishesByDH("O-Hill");
+          else if($DishSort == "Newcomb Options")
+            $Dishes = getDishesByDH("Newcomb");
+          else if($DishSort == "Runk Options")
+            $Dishes = getDishesByDH("Runk");
   }
   else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Sort by Dining Hall")
   {
@@ -46,12 +71,17 @@
   else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddDish")
   {
     addDish($_POST['dish'], $_POST['dining_hall'], $_POST['ethnicity']);
+
+    $ingredients_to_add = explode(',', $_POST['ingredients']);
+    foreach($ingredients_to_add as $i):
+      updateContains($_POST['dish'], $i);
+    endforeach;
+    $Dishes = getDishes();
   }
-  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "AddIngredient")
+  else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "Delete")
   {
-    $Nuts = false;
-    
-    addIngredient($_POST['newingredient'], $_POST['nuts'], $_POST['vegan'], $_POST['gluten_free'], $_POST['shellfish'], $_POST['dairy_free'], $_POST['vegetarian']);
+    removeDish($_POST['dish_to_delete'], $_POST['dining_hall_to_delete']);
+    $Dishes = getDishes();
   }
 }
 ?>
@@ -75,19 +105,41 @@ table, th, td {
     <meta name="description" content="Basic web app for interacting with Hoo Food Review">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Hoo Food Review</title>
+
+    <script language="javascript">
+        function ingredientsPopup() {
+          var message = <?php echo json_encode($message); ?>;
+          if(message != null){
+            alert(message);
+            <?php $message = null; ?>;
+          }
+        }
+    </script>
 </head> 
 
 <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
-<button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-<button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<?php 
+if ($_SESSION['isAdmin'] == FALSE) {
+?>
+   <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<?php 
+}
+else if ($_SESSION['isAdmin'] == TRUE) { 
+?>
+   <button class="tablink" onClick="location.href='admin_dh_page.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='admin_dish_page.php'" type="button">Dishes</button>
+<?php
+}
+?>
 
-<body>
+<body onload="ingredientsPopup()">
 
 <div class="container">
     <h1>Sort Options</h1>
 
-<form name="mainForm" action="dishes.php" method="post">
+<form name="mainForm" action="admin_dish_page.php" method="post">
 
 <input type="submit" value="Sort by Dining Hall" name="btnAction" class="btn btn-dark"
         title="Sort by Dining Hall" />
@@ -105,6 +157,9 @@ table, th, td {
         title="Find Newcomb Food Options" />
 <input type="submit" value="Runk Options" name="btnAction" class="btn btn-dark"
         title="Find Runk Food Options" />
+
+<!--<input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" />-->
+<button class="tablink" onClick="basicPopup('ingredient_page.php')" type="button" name="ing">Ingredients</button>
 </form>
 <hr/>
 
@@ -134,32 +189,6 @@ table, th, td {
 </form>
 <hr/>
 
-<div class="container">
-  <h1>Add an Ingredient</h1>  
-
-  <form name="mainAdminForm" action="admin_dish_page.php" method="post">
-  <div class = "row mb-3 mx-3">
-      Ingredient:
-      <input type="text" class="form-control" name="newingredient" required />
-  </div>
-  <input type="checkbox" id="vegetarian" name="vegetarian" value="vegetarian">
-  <label for="vegetarian"> Vegetarian</label><br>
-  <input type="checkbox" id="dairy_free" name="dairy_free" value="dairy_free">
-  <label for="dairy_free"> Dairy Free</label><br>
-  <input type="checkbox" id="shellfish" name="shellfish" value="shellfish">
-  <label for="shellfish"> Shellfish</label><br>
-  <input type="checkbox" id="gluten_free" name="gluten_free" value="gluten_free">
-  <label for="gluten_free"> Gluten Free</label><br>
-  <input type="checkbox" id="vegan" name="vegan" value="vegan">
-  <label for="vegan"> Vegan</label><br>
-  <input type="checkbox" id="nuts" name="nuts" value="nuts">
-  <label for="nuts"> Nuts</label><br>  
-  <input type="submit" value="AddIngredient" name="btnAction" class="btn btn-dark"
-        title="insert an ingredient" />
-
-</form>
-<hr/>
-
 <h1>Dishes</h1>
 <!-- <div class="row justify-content-center">   -->
 <table class="w3-table w3-bordered w3-card-4" style="width:90%">
@@ -169,8 +198,8 @@ table, th, td {
     <th width="10%">Dining Hall</th>        
     <th width="10%">Ethnicity</th>
     <th width="10%">Average Rating</th>
-    <th width="10%">Rate</th> 
     <th width="10%">Ingredients</th>   
+    <th width="10%">Delete</th>
   </tr>
   </thead>
   <?php foreach($Dishes as $Dish): ?>
@@ -179,16 +208,21 @@ table, th, td {
     <td><?php echo $Dish['DH_Name']; ?></td>
     <td><?php echo $Dish['Ethnicity']; ?></td>
     <td><?php echo $Dish['Avg_Rating']; ?></td>
-    <td>
-        <form action="dishes.php" method="post">
-            <input type="submit" value="Rate" name="btnAction"
-            class="btn btn-primary" />
+  <td>
+        <form action="admin_dish_page.php" method="post">
+           <!--- <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" /> --->
+           <input type="hidden" name="dn" value="<?php echo $Dish['Dish_Name']?>" />
+            <input type="hidden" name="dh" value="<?php echo $Dish['DH_Name']?>"/>
+            <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" />
+        </form>
   </td>
   <td>
-        <form action="dishes.php" method="post">
-           <!--- <input type="submit" value="Ingredients" name="btnAction" class="btn btn-primary" /> --->
-           <button class="tablink" onClick="basicPopup('ingredient_page.php')" type="button" value="<?php echo $Dish['Dish_Name']?>" name="ing">Ingredients</button>
-  </td>
+    <form action="admin_dish_page.php" method="post">
+            <input type="submit" value="Delete" name="btnAction" class="btn btn-danger" />
+            <input type="hidden" name="dish_to_delete" value="<?php echo $Dish['Dish_Name'] ?>"/>
+            <input type="hidden" name="dining_hall_to_delete" value="<?php echo $Dish['DH_Name'] ?>"/>
+        </form>
+    </td>
   </tr>
   <?php endforeach; ?>
   </table>
@@ -201,6 +235,15 @@ $Ingredient_to_display = $_POST['ing'];
 	}
 
 </script>
+
+<?php
+}
+else {
+   header('Location: base.php');
+   echo("No access to this page");
+   // Force login. If the user has not logged in, redirect to login page
+}
+?>
 
 </body> 
 </html> 

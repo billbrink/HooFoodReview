@@ -5,6 +5,7 @@ session_name($session_name);
 session_start();    // make sessions available
 
 require('HooFoodReview_db.php');
+//require('connect-db.php');
 
 // client id: 741369040500-97fqjc6h24v7v04ibbgr0u38sk04r6nm.apps.googleusercontent.com
 // client secret: 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
@@ -13,11 +14,11 @@ require('HooFoodReview_db.php');
 
 if (!isset($_SESSION['username1'])) {
    $username = 'login';
+   $_SESSION['isAdmin'] = FALSE;
 }
 else {
    $username = $_SESSION['username1'];
 }
-
 $password = '';
 $host = 'hoo-food-review:us-east4:hfr-db';
 $dbname = 'HooFoodReview';
@@ -65,8 +66,21 @@ catch (Exception $e)       // handle any type of exception
   <title>Hoo Food Review</title>    
 </head>
 
-<button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-<button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<?php 
+if ($_SESSION['isAdmin'] == FALSE) {
+?>
+   <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<?php 
+}
+else if ($_SESSION['isAdmin'] == TRUE) { 
+?>
+   <button class="tablink" onClick="location.href='admin_dh_page.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='admin_dish_page.php'" type="button">Dishes</button>
+<?php
+}
+?>
+
 
 <body>
 
@@ -82,6 +96,7 @@ catch (Exception $e)       // handle any type of exception
 
 
 <?php
+
 // Define a function to handle failed validation attempts 
 function reject($entry)
 {
@@ -108,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
                $hash_pwd = md5($pwd);
                if($hash_pwd == $user_arr["auth_string"]) {
                   $_SESSION['username1'] = $user;
+                  $_SESSION['isAdmin'] = FALSE;
                   // redirect the browser to another page using the header() function to specify the target URL
-                  //header('Location: diningHalls.php/', TRUE, 301);
                }
             }
          }
@@ -118,33 +133,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['username']) > 0)
                $hash_pwd = md5($pwd);
                if($hash_pwd == $ad_arr["auth_string"]) {
                   $_SESSION['username1'] = $user;
+                  $_SESSION['isAdmin'] = TRUE;
                   // redirect the browser to another page using the header() function to specify the target URL
-                  //header('Location: diningHalls.php/', true, 301);
                }
             }
          }
       }
+      if(isset($_SESSION['username1'])) {
+         echo("You are logged in as ");
+         echo($_SESSION["username1"]); 
+         header('Location: base.php');
+         exit;
+      } else {
+         echo("Please login");
+         header('Location: base.php');
+         exit;
+      }
    }
 }
-
-if(isset($_SESSION['username1'])) {
-   echo("You are logged in as ");
-   echo($_SESSION["username1"]); 
-   echo("\n");
-   ?> 
-   <!-- <div class="container">
-    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-      <input type="submit" value="Logout" class="btn btn-light" onClick=<?php $_SESSION["username1"] = 'login'?> />
-    </form>
-  </div> -->
-   <?php
-} else {
-   echo("Please login");
-}
-
 ?>
 
 
 </body>
-</html>
-  
+</html> 

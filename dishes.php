@@ -1,10 +1,6 @@
 <?php
+    require('connect-db.php');
     require('HooFoodReview_db.php');
-
-
-    $session_name = "login_sess";
-    session_name($session_name);
-    session_start(); 
 
     if (isset($_SESSION['username1']))
     {
@@ -14,6 +10,7 @@
       $DH = null;
       $message = null;
       $DishSort = "Sort by Dish";
+      $newRate = null;
 
       if ($_SERVER['REQUEST_METHOD'] == 'POST')
       {
@@ -79,9 +76,25 @@
           $DishSort = "Runk Options";
           $Dishes = getDishesByDH("Runk");
         }
-        else if (!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateRate") {
-          
-          $Dishes = getDishesByDH($DishSort);
+        else if(!empty($_POST['btnAction']) && $_POST['btnAction'] == "UpdateRate")
+        {
+          updateUserRate($_SESSION['username1'], $_POST['dn'], $_POST['dh'], $_POST['updateRate']);
+          if($DishSort == "Sort by Dining Hall")
+            $Dishes = getDishesDHSort();
+          else if($DishSort == "Sort by Dish")
+            $Dishes = getDishes();
+          else if($DishSort == "Sort by Ethnicity")
+            $Dishes = getDishesEthnicitySort();
+          else if($DishSort == "Rating High to Low")
+            $Dishes = getDishesRatingSort("DESC");
+          else if($DishSort == "Rating Low to High")
+            $Dishes = getDishesRatingSort("ASC");
+          else if($DishSort == "O-Hill Options")
+            $Dishes = getDishesByDH("O-Hill");
+          else if($DishSort == "Newcomb Options")
+            $Dishes = getDishesByDH("Newcomb");
+          else if($DishSort == "Runk Options")
+            $Dishes = getDishesByDH("Runk");
         }
       }
   ?>
@@ -114,19 +127,26 @@
           }
         }
 
-        function ratingsPopup() {
-          var rate = prompt("Rate (1-5): ", "");
-          if(rate != null)
-            document.getElementById("yourRate").innerHTML = rate + "/5";
-        }
       </script>
 
   </head> 
 
   <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
-  <button class="tablink" onclick="location.href='diningHalls.php'" type="button">Dining Halls</button>
-  <button class="tablink" onclick="location.href='dishes.php'" type="button">Dishes</button>
+  <?php 
+if ($_SESSION['isAdmin'] == FALSE) {
+?>
+   <button class="tablink" onClick="location.href='diningHalls.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='dishes.php'" type="button">Dishes</button>
+<?php 
+}
+else if ($_SESSION['isAdmin'] == TRUE) { 
+?>
+   <button class="tablink" onClick="location.href='admin_dh_page.php'" type="button">Dining Halls</button>
+   <button class="tablink" onClick="location.href='admin_dish_page.php'" type="button">Dishes</button>
+<?php
+}
+?>
 
   <body onload="ingredientsPopup()">
 
@@ -164,20 +184,27 @@
       <th width="10%">Ethnicity</th>
       <th width="10%">Average Rating</th>
       <th width="10%">Your Rate</th>
-      <th width="10%">Ingredients</th>   
+      <th width="10%">Update Rate</th>
+      <th width="10%">Ingredients</th>
     </tr>
     </thead>
-    <?php foreach($Dishes as $Dish): ?>
+    <?php foreach($Dishes as $Dish):
+      $rate = getUserRates($_SESSION['username1'], $Dish['Dish_Name'], $Dish['DH_Name']); ?>
       <tr>
         <td><?php echo $Dish['Dish_Name']; ?></td>
         <td><?php echo $Dish['DH_Name']; ?></td>
         <td><?php echo $Dish['Ethnicity']; ?></td>
         <td><?php echo $Dish['Avg_Rating']; ?></td>
+        <td id="rate"><?php echo $rate['Rating']; ?></td>
         <td>
           <form action="dishes.php" method="post">
-            <input type="text" id="yourRate" value="<?php echo getUserRate($_SESSION['username1'], $Dish['Dish_Name'])?>" />
-            <input type="submit" onclick="ratingsPopup()" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: right"/>
-        </td>
+            <label for="updateRate">Rate:</label>
+            <input type="text" id="updateRate" name="updateRate" />
+            <input type="hidden" name="dn" value="<?php echo $Dish['Dish_Name']?>" />
+            <input type="hidden" name="dh" value="<?php echo $Dish['DH_Name']?>"/>
+            <input type="submit" value="UpdateRate" name="btnAction" class="btn btn-primary" style="float: center"/>
+          </form>
+       </td>
         <td>
           <form action="dishes.php" method="post">
             <input type="hidden" name="dn" value="<?php echo $Dish['Dish_Name']?>" />
