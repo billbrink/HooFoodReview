@@ -7,6 +7,10 @@ session_name($session_name);
 session_start(); 
 
 
+if (isset($_SESSION['username1']))
+{
+
+
 $OHill_Hours = getDHHours('O-Hill');
 $Newcomb_Hours = getDHHours('Newcomb');
 $Runk_Hours = getDHHours('Runk');
@@ -35,10 +39,7 @@ table, th, td {
     <title>The Hoo Food Review</title>
 </head> 
 
-<?php
-if (isset($_SESSION['username1']))
-{
-?> 
+
 
   <!-- Tab stuff taken from https://www.w3schools.com/howto/howto_js_full_page_tabs.asp?msclkid=0750ebc7ae1311ec95c4ba22f2991121 -->
 
@@ -134,7 +135,5 @@ else {
    // Force login. If the user has not logged in, redirect to login page
 }
 ?>
-
 </body> 
-
 </html> 

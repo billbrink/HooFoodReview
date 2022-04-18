@@ -2,6 +2,13 @@
     require('connect-db.php');
     require('HooFoodReview_db.php');
 
+    $session_name = "login_sess";
+    session_name($session_name);
+    session_start(); 
+    
+    if (isset($_SESSION['username1']) && $_SESSION['isAdmin'] == TRUE)
+    {
+
     $Dishes = getDishes();
     $Ingredient_to_display = null;
 
@@ -228,6 +235,15 @@ $Ingredient_to_display = $_POST['ing'];
 	}
 
 </script>
+
+<?php
+}
+else {
+   header('Location: base.php');
+   echo("No access to this page");
+   // Force login. If the user has not logged in, redirect to login page
+}
+?>
 
 </body> 
 </html> 
